@@ -1,0 +1,77 @@
+﻿@model IEnumerable<App_Shared.ViewModels.ViewFavoriteProduct>
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Index";
+    var idlogin = Context.Session.GetString("IdLogin");
+    List<string>
+        imageExtensions = new List<string>
+            ()
+                                                                   {
+        ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf"
+                                                                   };
+ }
+ <style>
+    .imgmd{
+        width:50px;
+        height:50px;
+    }
+</style>
+<div class="container">
+    <h1 style="text-align:center">Sản Phẩm Yêu Thích</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tên Sản Phẩm
+                </th>
+                <th>
+                    Giá Bán
+                </th>
+                <th>
+                    Ảnh
+                </th>
+                <th>
+                    NSX
+                </th>
+                <th>
+                    Mô tả SP
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                @if (idlogin == item.AccountID.ToString())
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameProduct)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PriceProduct)
+                        </td>
+
+                        <td>
+                            @{
+                                string extension = System.IO.Path.GetExtension(item.ImageUrlProduct);
+                            }
+                            <img src="~/images/@item.ImageUrlProduct" alt="Image" class="imgmd">
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ManufacturerProduct)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DescriptionProduct)
+                        </td>
+                        <td>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductID">Chi tiet</a>
+                            <a asp-controller="FavoriteProducts" asp-action="Delete" asp-route-id="@item.ProductID">Xóa</a>
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</div>

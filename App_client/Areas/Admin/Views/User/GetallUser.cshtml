@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Pro131_Nhom4.Data.User>
+
+@{
+	ViewData["Title"] = "GetallUser";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Danh sách người dùng</h3>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Name
+			</th>
+			<th>
+				Email
+			</th>
+			<th>
+				Giới tính
+			</th>
+			<th>
+				Số điện thoại
+			</th>
+			<th>
+				Điểm
+			</th>
+			<th>
+			Địa chỉ
+			</th>
+			<th>
+				Trạng thái
+			</th>
+			<th>
+				Vai trò
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.UserName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Email)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Gender)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PhoneNumber)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Point)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Address)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Status)
+				</td>
+				<td>
+					@*@Html.ActionLink("updateRole","updateRole", "User", new { area = "Admin", id=item.Id })*@
+					<a class="btn btn-primary" id="updateLink" href="@Url.Action("updateRole", "User", new { area = "Admin", id = item.Id })">Update Role</a>
+					<button id="confirmButton" style="display: none;">Xác nhận</button>
+
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<script>
+
+

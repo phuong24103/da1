@@ -1,0 +1,97 @@
+﻿@using App_Shared.Model;
+@model IEnumerable<App_Shared.Model.CartDetails>
+
+@{
+	ViewData["Title"] = "Index";
+	List<string>
+		imageExtensions = new List<string>
+			()
+																   {
+		".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf"
+																   };
+}
+@{
+	decimal totalAmount = 0; // Khởi tạo biến để tính tổng tiền
+}
+
+<h3 style="text-align:center">Giỏ hàng của bạn</h3>
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					Tên sản phẩm
+				</th>
+				<th>
+
+				</th>
+				<th>
+					Số lượng sản phẩm
+				</th>
+				<th>
+					Giá
+				</th>
+				<th>
+					Mô tả sản phẩm
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					@{
+
+						var product = ViewData["productList"] as List<Product>;
+						var productName = product?.FirstOrDefault(p => p.Id == item.ProductID)?.Name;
+						var price = product?.FirstOrDefault(p => p.Id == item.ProductID)?.Price;
+						var image = product?.FirstOrDefault(p => p.Id == item.ProductID)?.ImageUrl;
+						var Description = product?.FirstOrDefault(p => p.Id == item.ProductID)?.Description;
+
+					}
+
+					<td>@productName</td>
+					<td>
+						@{
+							string extension = System.IO.Path.GetExtension(image);
+							string imagePath = $"~/images/{image}";
+							decimal productTotal = (decimal)price * item.Quantity; // Tính tổng giá cho sản phẩm này
+							totalAmount += productTotal; // Cộng vào tổng tiền
+						}
+						<img src="@Url.Content(imagePath)" alt="Image" style="width:100px;height:100px" class="img-fluid">
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Quantity)
+					</td>
+					<td>@price</td>
+					<td>@Description</td>
+					<td>
+					
+						@Html.ActionLink("Xóa", "Delete","Cart", new {id=item.Id })
+					</td>
+				</tr>
+			}
+			<tr>
+				<td colspan="5"></td>
+				<td><strong>Tổng tiền:</strong></td>
+				<td><strong>@totalAmount</strong></td>
+			</tr>
+		</tbody>
+
+	</table>
+	<div>
+		@{
+			var productCount = ViewData["productList"] as List<Product>;
+			if (productCount == null || productCount.Count == 0)
+			{
+				<h1></h1>
+			}
+			else
+			{
+				<a asp-controller="Checkour" asp-action="PaymentOff" class="btn btn-primary float-right">Thanh toan</a>
+			}
+
+		}
+	</div>
+</div>

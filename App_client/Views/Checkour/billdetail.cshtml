@@ -1,0 +1,76 @@
+﻿@using App_Shared.Model;
+@model IEnumerable<App_Shared.Model.BillDetails>
+
+@{
+	ViewData["Title"] = "billdetail";
+	var listproduct = ViewData["billdetail"] as List<Product>;
+	List<string>
+		imageExtensions = new List<string>
+			()
+								   {
+		".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf"
+								   };
+}
+
+<div class="container text-center">
+<h3>Sản phẩm trong hóa đơn </h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Hình ảnh
+			</th>
+			<th>
+				Sản phẩm
+			</th>
+			<th>
+				số lượng
+			</th>
+			<th>
+				Giá tiền
+			</th>
+
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+
+				@foreach (var a in listproduct)
+				{				
+						string extension = System.IO.Path.GetExtension(a.ImageUrl);
+					
+
+					@if (a.Id == item.ProductID) // Giả sử có một thuộc tính ProductID để so sánh
+					{
+						<td>
+							<img src="~/images/@a.ImageUrl" alt="Image placeholder" style="width:100px;height:100px" class="img-fluid"><!-- Hiển thị tên sản phẩm -->
+						</td>
+					}
+				}
+				@foreach (var a in listproduct)
+				{
+					@if (a.Id == item.ProductID) // Giả sử có một thuộc tính ProductID để so sánh
+					{
+						<td>
+							@a.Name <!-- Hiển thị tên sản phẩm -->
+						</td>
+					}
+				}
+				<td>
+					@Html.DisplayFor(modelItem => item.Quantity)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Prices)
+				</td>
+				<td>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+</div>
